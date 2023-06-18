@@ -1,33 +1,37 @@
-const controls = document.querySelectorAll('.btn');
-let currentItem = 0;
 const slides = document.querySelectorAll('.slide');
-let maxSlides = slides.length;
 
-controls.forEach((btn) => {
-   btn.addEventListener('click', (e) => {
-      let isLeft = btn.classList.contains('left-btn');
+slides.forEach((slide, indx) => {
+   slide.style.transform = `translateX(${indx * 100}%)`;
+});
 
-      if (isLeft) {
-         currentItem --;
-      } else{
-         currentItem ++;
-      }
+const nextSlide = document.querySelector('.right-btn');
+let curSlide = 0;
+let maxSlide = slides.length - 1;
 
-      if (currentItem >= maxSlides){
-         currentItem = 0;
-      } 
+nextSlide.addEventListener('click', function() {
+   if (curSlide === maxSlide){
+      curSlide = 0;
+   } else{
+      curSlide++;
+   }
 
-      if (currentItem < 0){
-         currentItem = maxSlides - 1;
-      }
-
-      slides.forEach((slide) => slide.classList.remove('current-slide'));
-
-      slides[currentItem].scrollIntoView({
-         behavior: "smooth",
-         inline: "center"
-      });
-
-      slides[currentItem].classList.add('current-slide');
+   slides.forEach((slide, indx) => {
+      slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
    })
 })
+
+const prevSlide = document.querySelector('.left-btn');
+
+prevSlide.addEventListener('click', function() {
+   if (curSlide === 0){
+      curSlide = maxSlide;
+   } else{
+      curSlide--;
+   }
+
+   slides.forEach((slide, indx) => {
+      slide.style.transform = `translateX(${100 * (indx - curSlide)}%)`;
+   })
+})
+
+
